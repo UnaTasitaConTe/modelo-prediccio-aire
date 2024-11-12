@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
+import numpy as np
 
 # Cargar el conjunto de datos
 file_path = './data/BD_SINDES_clean.csv'  # Ajusta la ruta según sea necesario
@@ -37,7 +38,7 @@ model = Sequential([
 model.compile(optimizer='adam', loss='mse', metrics=['mae'])
 
 # Entrenar el modelo
-history = model.fit(X_train_scaled, y_train_scaled, validation_split=0.2, epochs=50, batch_size=32, verbose=1)
+history = model.fit(X_train_scaled, y_train_scaled, validation_split=0.2, epochs=200, batch_size=32, verbose=1)
 
 # Evaluar el modelo
 test_loss, test_mae = model.evaluate(X_test_scaled, y_test_scaled, verbose=1)
@@ -57,14 +58,21 @@ y_pred_scaled = model.predict(X_test_scaled)
 y_pred = scaler_y.inverse_transform(y_pred_scaled)
 y_true = scaler_y.inverse_transform(y_test_scaled)
 
-# Visualizar valores reales vs predichos
+n_muestras = 20  # Número de muestras a graficar
+indices = np.sort(np.random.choice(len(y_true), n_muestras, replace=False))  # Ordenar índices para continuidad
+
+# Crear el gráfico con estilo similar al proporcionado
 plt.figure(figsize=(10, 6))
-plt.scatter(range(len(y_true)), y_true[:, 0], label='Velocidad Real WS10M', alpha=0.6)
-plt.scatter(range(len(y_pred)), y_pred[:, 0], label='Velocidad Predicha WS10M', alpha=0.6)
+plt.plot(indices, y_true[indices, 0], label='Real', alpha=0.8, linewidth=2)
+plt.plot(indices, y_pred[indices, 0], label='Predicción', alpha=0.8, linewidth=2)
+
+# Configuración del gráfico
 plt.xlabel('Índice de muestra')
 plt.ylabel('Velocidad del viento a 10m (WS10M)')
-plt.title('Valores reales vs predichos de WS10M')
+plt.title('Valores reales vs predicción de WS10M')
 plt.legend()
+
+# Guardar el gráfico en un archivo
 plt.savefig('./static/plots/valores_reales_vs_predichos.png')  # Guardar el gráfico
 plt.close()
 

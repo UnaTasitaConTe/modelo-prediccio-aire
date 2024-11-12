@@ -29,12 +29,12 @@
     <div class="min-h-screen bg-base-200">
         <div class="navbar bg-base-100">
             <div class="flex-1">
-                <a class="btn btn-ghost text-xl">FESC - MODELO PREDICCION SINDES</a>
+              <p class="btn btn-ghost normal-case text-xl break-words max-w-xs sm:max-w-md">
+                FESC - MODELO PREDICCION SINDES
+              </p>
             </div>
-
-        </div>
-
-        <div class="grid grid-cols-3 gap-3 p-5 ">
+          </div>
+        <div class="grid md:grid-cols-3 grid-cols-1 gap-1 md:gap-3 p-5 ">
 
             <div class="card bg-base-100 shadow-xl">
                 <figure>
@@ -55,8 +55,8 @@
                 </figure>
                 <div class="card-body">
                     <h2 class="card-title">Grafico de Predicion vs Actualidad!</h2>
-                    <p>El gráfico muestra la comparación entre los valores reales (Actual WS10M) y los valores predichos
-                        (Predicted WS10M) para la velocidad del viento a 10 metros de altura.</p>
+                    <p>
+                        Este gráfico representa una comparación entre valores reales y valores predichos de la velocidad del viento a 10 metros (WS10M) en diferentes puntos de muestreo.</p>
                     <div class="card-actions justify-end">
                         <button class="btn btn-primary" onclick="my_modal_3.showModal()">Ver Más</button>
                     </div>
@@ -81,7 +81,9 @@
         </div>
         <div class="mx-auto container">
             <h1>Datos Utilizado</h1>
-            <table class="table bg-base-100 table-xs table-zebra">
+            <div class="overflow-x-auto">
+
+            <table class="table bg-base-100 table-xs table-zebra  table-xs table-pin-rows table-pin-cols  shadow-lg mb-5">
                 <thead>
                     <tr>
                         <!-- Generar encabezados dinámicos -->
@@ -101,6 +103,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
         </div>
       
     </div>
@@ -160,26 +163,22 @@
 
     <dialog id="my_modal_3" class="modal">
         <div class="modal-box w-11/12 max-w-5xl">
-            <h3 class="text-lg font-bold">Grafico de Residuos!</h3>
+            <h3 class="text-lg font-bold">Grafico de Valores Reales vs Predición!</h3>
             <figure>
                 <img src="{{ plots[1] }}" alt="perdida_entrenamiento" />
             </figure>
 
             <h4 class="text-lg font-bold">Explicación Grafico</h4>
+            <h2>Eje X (Índice de muestra):</h2>
+            <p>Representa el índice de las muestras analizadas, que podrían corresponder a puntos específicos de tiempo, ubicación u otra variable dependiente.</p>
+        
+            <h2>Eje Y (Velocidad del viento en WS10M):</h2>
+            <p>Muestra los valores de la velocidad del viento en unidades específicas (probablemente m/s o km/h, dependiendo de la fuente de datos).</p>
+        
+            <h2>Línea azul (Real):</h2>
+            <h2>Línea naranja (Predicción)</h2>
 
-            <ul>
-                <li>
-                    Los puntos azules y naranjas deberían estar muy cerca unos de otros si el modelo está prediciendo
-                    con precisión.
-                </li>
-                <li>
-                    En este caso, los puntos naranjas (<span class="highlight">predicciones</span>) parecen estar
-                    bastante centralizados en comparación con los azules, pero no capturan toda la dispersión de los
-                    datos reales.
-                </li>
-            </ul>
-
-            <h2>Variabilidad de los datos</h2>
+            <h2 class="mt-2">Variabilidad de los datos</h2>
             <ul>
                 <li>
                     La dispersión de los puntos azules indica que los valores reales tienen más variabilidad.

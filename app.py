@@ -9,7 +9,7 @@ def index():
     data = pd.read_csv(file_path)
 
     # Selecciona los primeros 100 registros
-    data_limited = data.head(100)
+    data_limited = data.head(30)
 
     # Convierte a lista de diccionarios para pasar a la plantilla
     results = data_limited.to_dict(orient='records')
