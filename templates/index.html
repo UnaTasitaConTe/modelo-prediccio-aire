@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados Modelo</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="min-h-screen bg-base-200">
+        <div class="navbar bg-base-100">
+            <div class="flex-1">
+                <a class="btn btn-ghost text-xl">FESC - MODELO PREDICCION SINDES</a>
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 p-5 ">
+
+            <div class="card bg-base-100 shadow-xl">
+                <figure>
+                    <img src="{{ plots[0] }}" alt="perdida_entrenamiento" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">Grafico de Perdidad!</h2>
+                    <p>El gráfico muestra la pérdida de entrenamiento y la pérdida de validación durante las 50 épocas
+                        de entrenamiento de un modelo de red neuronal.</p>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary" onclick="my_modal_2.showModal()">Ver Más</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card  bg-base-100  shadow-xl">
+                <figure>
+                    <img src="{{ plots[1] }}" alt="prediccion vs Actualidad" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">Grafico de Predicion vs Actualidad!</h2>
+                    <p>El gráfico muestra la comparación entre los valores reales (Actual WS10M) y los valores predichos
+                        (Predicted WS10M) para la velocidad del viento a 10 metros de altura.</p>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary" onclick="my_modal_3.showModal()">Ver Más</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card  bg-base-100  shadow-xl">
+                <figure>
+                    <img src="{{ plots[2] }}" alt="perdida_entrenamiento" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="card-title">Grafico de Residuos!</h2>
+                    <p>El gráfico muestra los residuos para el modelo de predicción de la velocidad del viento a 10
+                        metros (WS10M).</p>
+                    <div class="card-actions justify-end">
+                        <button class="btn btn-primary" onclick="my_modal_4.showModal()">Ver Más</button>
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </div>
+        <div class="mx-auto container">
+            <h1>Datos Utilizado</h1>
+            <table class="table bg-base-100 table-xs table-zebra">
+                <thead>
+                    <tr>
+                        <!-- Generar encabezados dinámicos -->
+                        {% for col in results[0].keys() %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Generar filas dinámicas -->
+                    {% for row in results %}
+                    <tr>
+                        {% for value in row.values() %}
+                        <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+      
+    </div>
+
+    <!-- You can open the modal using ID.showModal() method -->
+    <dialog id="my_modal_4" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl">
+            <h3 class="text-lg font-bold">Grafico de Residuos!</h3>
+            <figure>
+                <img src="{{ plots[2] }}" alt="perdida_entrenamiento" />
+            </figure>
+
+            <h4 class="text-lg font-bold">Explicación Grafico</h4>
+
+            <ul>
+                <li>
+                    Los residuos están distribuidos alrededor de <span class="highlight">0</span>, lo cual es un buen
+                    indicador de que el modelo no tiene un sesgo sistemático.
+                </li>
+                <li>
+                    No hay una tendencia clara en los residuos, lo que sugiere que el modelo no está subestimando ni
+                    sobreestimando consistentemente.
+                </li>
+            </ul>
+
+            <h3>Amplitud de los residuos:</h3>
+            <ul>
+                <li>
+                    La mayoría de los residuos están en un rango de aproximadamente <span class="highlight">-3 a
+                        3</span>.
+                </li>
+                <li>
+                    Algunos puntos extremos están fuera de este rango, lo que indica posibles valores atípicos o errores
+                    en ciertas predicciones.
+                </li>
+            </ul>
+
+            <h3>Homoelasticidad:</h3>
+            <ul>
+                <li>
+                    La dispersión de los residuos es relativamente constante en todo el rango de las muestras, lo cual
+                    indica que el modelo mantiene un error consistente para diferentes valores de entrada.
+                </li>
+                <li>
+                    Esto es deseable, ya que significa que el modelo predice con una variabilidad uniforme en todo el
+                    conjunto de datos.
+                </li>
+            </ul>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="btn">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="my_modal_3" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl">
+            <h3 class="text-lg font-bold">Grafico de Residuos!</h3>
+            <figure>
+                <img src="{{ plots[1] }}" alt="perdida_entrenamiento" />
+            </figure>
+
+            <h4 class="text-lg font-bold">Explicación Grafico</h4>
+
+            <ul>
+                <li>
+                    Los puntos azules y naranjas deberían estar muy cerca unos de otros si el modelo está prediciendo
+                    con precisión.
+                </li>
+                <li>
+                    En este caso, los puntos naranjas (<span class="highlight">predicciones</span>) parecen estar
+                    bastante centralizados en comparación con los azules, pero no capturan toda la dispersión de los
+                    datos reales.
+                </li>
+            </ul>
+
+            <h2>Variabilidad de los datos</h2>
+            <ul>
+                <li>
+                    La dispersión de los puntos azules indica que los valores reales tienen más variabilidad.
+                </li>
+                <li>
+                    Los puntos naranjas están más concentrados, lo que podría sugerir que el modelo está <span
+                        class="highlight">subestimando</span> la variabilidad real del fenómeno.
+                </li>
+            </ul>
+
+            <h2>Evaluación de las predicciones</h2>
+            <ul>
+                <li>
+                    Aunque hay puntos donde los valores predichos y reales coinciden, el modelo tiene dificultades para
+                    capturar extremos o patrones más complejos de los datos reales.
+                </li>
+            </ul>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="btn">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <dialog id="my_modal_2" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl">
+            <h3 class="text-lg font-bold">Grafico de Residuos!</h3>
+            <figure>
+                <img src="{{ plots[0] }}" alt="perdida_entrenamiento" />
+            </figure>
+
+            <h4 class="text-lg font-bold">Explicación Grafico</h4>
+
+            <h2>Tendencia general</h2>
+            <ul>
+                <li>
+                    La <span class="highlight">pérdida de entrenamiento</span> disminuye consistentemente, indicando que
+                    el modelo está aprendiendo de los datos de entrenamiento.
+                </li>
+                <li>
+                    La <span class="highlight">pérdida de validación</span> también disminuye, lo que sugiere que el
+                    modelo está generalizando adecuadamente y no hay un sobreajuste evidente.
+                </li>
+            </ul>
+
+            <h2>Convergencia</h2>
+            <ul>
+                <li>
+                    Hacia el final (después de unas <span class="highlight">40 épocas</span>), ambas curvas convergen y
+                    mantienen valores estables.
+                </li>
+                <li>
+                    Esto indica que el modelo ha aprendido todo lo que puede de los datos de entrenamiento y validación,
+                    logrando un equilibrio.
+                </li>
+            </ul>
+
+            <h2>Relación entre las curvas</h2>
+            <ul>
+                <li>
+                    La pérdida de validación es <span class="highlight">ligeramente mayor</span> que la de
+                    entrenamiento, lo cual es normal porque los datos de validación no son los mismos que los del
+                    entrenamiento.
+                </li>
+            </ul>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="btn">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
+</body>
+
+</html>
